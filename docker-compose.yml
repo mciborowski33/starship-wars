@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  mongodb-dev:
+    container_name: mongodb-starships
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongopass
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/other/mongodb/data
+
+volumes:
+  mongodb_data_container:
+    driver: local
