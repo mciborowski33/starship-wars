@@ -15,7 +15,7 @@ const App: React.FC = () => {
 		<div className="appview">
 			<div className="av-nav">
 				<div className="av-title">
-					Starships
+					Starships Wars
 				</div>
 				<div className="av-links">
 					<div
