@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import getStarship from './get_starship';
+import getAllStarships from './get_all_starships';
 
 const router: Router = Router()
 
-router.get('/get_starship', getStarship);
+router.get('/get_all_starships', getAllStarships);
 
 export default router

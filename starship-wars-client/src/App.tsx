@@ -1,36 +1,48 @@
-import React, { useEffect, useState } from 'react'
-import { DisplayStarship } from './components'
-import { getStarship } from './API'
+import React from 'react'
+import {
+	Routes,
+	Route,
+	useNavigate,
+} from 'react-router-dom';
+import { GamePage, ListPage } from './pages';
+import { PATHS } from './utils';
+import './App.sass';
 
 const App: React.FC = () => {
-	const [starships, setStarships] = useState<IStarship[]>([])
-
-	useEffect(() => {
-		fetchStarship()
-	}, [])
-
-	const fetchStarship = (): void => {
-		getStarship()
-			.then(({ data: { starships } }: IStarship[] | any) => {
-				setStarships(starships);
-			})
-			.catch((err: Error) => console.log(err));
-	};
-
-	console.log(starships);
+	const navigate = useNavigate();
 
 	return (
-		<main className='App'>
-			<h1>
-				Starships
-			</h1>
-			{starships.length > 0 && starships.map((item: IStarship) => (
-				<DisplayStarship
-					key={item._id}
-					starship={item}
-				/>
-			))}
-		</main>
+		<div className="appview">
+			<div className="av-nav">
+				<div className="av-title">
+					Starships
+				</div>
+				<div className="av-links">
+					<div
+						className="av-link"
+						onClick={() => {
+							navigate('/');
+						}}
+					>
+						Game
+					</div>
+					<div
+						className="av-link"
+						onClick={() => {
+							navigate('/list');
+						}}
+					>
+						List
+					</div>
+				</div>
+			</div>
+			<div className="av-page">
+				<Routes>
+					<Route path={PATHS.GAME} element={<GamePage />} />
+					<Route path={PATHS.LIST} element={<ListPage />} />
+				</Routes>
+			</div>
+		</div>
 	)
 }
 

@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 import { IStarship } from '../../types';
 import { MStarship } from '../../models';
 
-const getStarship = async (req: Request, res: Response): Promise<void> => {
+const getAllStarships = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const starships: IStarship[] = await MStarship.find();
 		res.status(200).json({ starships });
@@ -11,4 +11,4 @@ const getStarship = async (req: Request, res: Response): Promise<void> => {
 	}
 };
 
-export default getStarship;
+export default getAllStarships;
