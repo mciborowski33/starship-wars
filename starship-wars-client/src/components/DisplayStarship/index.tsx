@@ -1,7 +1,12 @@
 import React, { Fragment } from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 
-const DisplayStarship: React.FC<StarshipProps> = ({ starship }) => {
+interface DisplayProps extends StarshipProps {
+	winner?: boolean;
+    loser?: boolean;
+}
+
+const DisplayStarship: React.FC<DisplayProps> = ({ starship, winner, loser }) => {
 	const card = (
 		<Fragment>
 			<CardContent>
@@ -20,9 +25,19 @@ const DisplayStarship: React.FC<StarshipProps> = ({ starship }) => {
 		</Fragment>
 	);
 
+	let bgColor = '#fff';
+	if (winner) {
+		bgColor = '#0f0';
+	} else if (loser) {
+		bgColor = '#f00'; 
+	}
+
 	return (
 		<div className="display-starship">
-			<Card variant="outlined">
+			<Card
+				variant="outlined"
+				style={{backgroundColor: bgColor}}
+			>
 				{card}
 			</Card>
 		</div>

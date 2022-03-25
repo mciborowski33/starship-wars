@@ -11,7 +11,7 @@ export const getAllStarships = async (page: number = 1): Promise<AxiosResponse<A
 	} catch (error: any) {
 		throw new Error(error)
 	}
-}
+};
 
 export const drawStarships = async (): Promise<AxiosResponse<ApiDataType>> => {
 	try {
@@ -22,4 +22,15 @@ export const drawStarships = async (): Promise<AxiosResponse<ApiDataType>> => {
 	} catch (error: any) {
 		throw new Error(error)
 	}
-}
+};
+
+export const getStarshipsCount = async (): Promise<AxiosResponse<ApiDataType>> => {
+	try {
+		const starshipsCount: AxiosResponse<ApiDataType> = await axios.get(
+			baseUrl + `/starships/get_starships_count`
+		);
+		return starshipsCount;
+	} catch (error: any) {
+		throw new Error(error)
+	}
+};

@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import { DisplayStarship } from '../../components';
-import { getAllStarships } from '../../API';
+import { getAllStarships, getStarshipsCount } from '../../API';
 import './list-page.sass';
+
+const PER_PAGE: number = 4;
 
 const ListPage: React.FC = () => {
 	const [starships, setStarships] = useState<IStarship[]>([])
+	const [starshipsCount, setStarshipsCount] = useState<number>(0);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 
 	useEffect(() => {
-		listAllStarships(pageNumber)
+		getStarshipsCount()
+			.then(({ data: { starshipsCount } }: number | any) => {
+				setStarshipsCount(starshipsCount);
+			})
+			.catch((err: Error) => console.log(err));
+	}, [])
+
+	useEffect(() => {
+		listAllStarships(pageNumber);
 	}, [pageNumber])
 
 	const listAllStarships = (page: number): void => {
@@ -37,7 +48,9 @@ const ListPage: React.FC = () => {
 				</div>
 				<Button
 					onClick={() => {
-						setPageNumber(pageNumber + 1);
+						if (pageNumber * PER_PAGE < starshipsCount) {
+							setPageNumber(pageNumber + 1);
+						}
 					}}
 				>
 					Next
