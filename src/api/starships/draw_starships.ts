@@ -1,11 +1,11 @@
-import { Response, Request } from 'express';
+import { Context } from 'koa';
 import { IStarship } from '../../types';
 import { MStarship } from '../../models';
 
-const drawStarships = async (req: Request, res: Response): Promise<void> => {
+const drawStarships = async (ctx: Context): Promise<void> => {
 	try {
 		const starships: IStarship[] = await MStarship.aggregate([{ $sample: { size: 2 } }]);
-		res.status(200).json({ starships });
+		ctx.body = { starships };
 	} catch (error) {
 		throw error;
 	}

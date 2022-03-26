@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DisplayStarship } from '../../components';
 import { drawStarships } from '../../API';
 import { storageHelper } from '../../utils';
@@ -20,6 +20,16 @@ const GamePage: React.FC = () => {
 	const [method, setMethod] = useState<string>('crew_number');
 	const [done, setDone] = useState<boolean>(true);
 
+	const declareWinner = useCallback((win: number): void => {
+		setWinner(win);
+		if (win >= 0) {
+			let newScores: number[] = [...scores];
+			newScores[win] += 1;
+			storageHelper.setItem('scores', JSON.stringify(newScores));
+			setScores(newScores);
+		}
+	}, [scores]);
+
 	useEffect(() => {
 		if (starships.length === 2 && !done) {
 			const shipStr1: number = +starships[0][method as keyof IStarship];
@@ -33,17 +43,7 @@ const GamePage: React.FC = () => {
 			}
 			setDone(true);
 		}
-	}, [starships, done, method]);
-
-	const declareWinner = (win: number): void => {
-		setWinner(win);
-		if (win >= 0) {
-			let newScores: number[] = [...scores];
-			newScores[win] += 1;
-			storageHelper.setItem('scores', JSON.stringify(newScores));
-			setScores(newScores);
-		}
-	};
+	}, [starships, done, method, declareWinner]);
 
 	const getStarships = (): void => {
 		drawStarships()

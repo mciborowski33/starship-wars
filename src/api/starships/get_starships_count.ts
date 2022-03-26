@@ -1,10 +1,11 @@
+import { Context } from 'koa';
 import { Response, Request } from 'express';
 import { MStarship } from '../../models';
 
-const getStarshipsCount = async (req: Request, res: Response): Promise<void> => {
+const getStarshipsCount = async (ctx: Context): Promise<void> => {
 	try {
 		const starshipsCount: number = await MStarship.count();
-		res.status(200).json({ starshipsCount });
+		ctx.body = { starshipsCount };
 	} catch (error) {
 		throw error;
 	}
