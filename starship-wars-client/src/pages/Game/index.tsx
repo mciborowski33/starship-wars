@@ -1,31 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import {
-	Button, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio,
-} from '@mui/material';
 import { DisplayStarship } from '../../components';
 import { drawStarships } from '../../API';
+import { storageHelper } from '../../utils';
+import Settings from './Settings';
 import './game-page.sass';
+
+const loadStorage = (): number[] => {
+	try {
+		return JSON.parse(storageHelper.getItem('scores') || '');
+	} catch (error) {
+		return [0, 0];
+	}
+};
 
 const GamePage: React.FC = () => {
 	const [starships, setStarships] = useState<IStarship[]>([]);
 	const [winner, setWinner] = useState<number>(-1);
+	const [scores, setScores] = useState<number[]>(loadStorage());
 	const [method, setMethod] = useState<string>('crew_number');
 	const [done, setDone] = useState<boolean>(true);
 
 	useEffect(() => {
-		if (starships.length === 2 && done) {
+		if (starships.length === 2 && !done) {
 			const shipStr1: number = +starships[0][method as keyof IStarship];
 			const shipStr2: number = +starships[1][method as keyof IStarship];
 			if (shipStr1 > shipStr2) {
-				setWinner(0);
+				declareWinner(0);
 			} else if (shipStr1 < shipStr2) {
-				setWinner(1);
+				declareWinner(1);
 			} else {
-				setWinner(-1);
+				declareWinner(-1);
 			}
 			setDone(true);
 		}
 	}, [starships, done, method]);
+
+	const declareWinner = (win: number): void => {
+		setWinner(win);
+		if (win >= 0) {
+			let newScores: number[] = [...scores];
+			newScores[win] += 1;
+			storageHelper.setItem('scores', JSON.stringify(newScores));
+			setScores(newScores);
+		}
+	};
 
 	const getStarships = (): void => {
 		drawStarships()
@@ -40,33 +58,19 @@ const GamePage: React.FC = () => {
 		<div className="game-page">
 			<div className="gp-topbar">
 				<div className="gp-points">
-					0
+					{scores[0]}
 				</div>
-				<div className="gp-settings">
-					<div className="gp-radiobtn">
-						<FormControl>
-							<FormLabel>Method of conflict</FormLabel>
-							<RadioGroup
-								value={method}
-								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-									setMethod((event.target as HTMLInputElement).value);
-								}}
-							>
-								<FormControlLabel value="crew_number" control={<Radio />} label="Crew" />
-								<FormControlLabel value="guns" control={<Radio />} label="Laser Guns" />
-							</RadioGroup>
-						</FormControl>
-					</div>
-					<Button
-						onClick={() => {
-							getStarships();
-						}}
-					>
-						Play
-					</Button>
-				</div>
+				<Settings
+					method={method}
+					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+						setMethod((event.target as HTMLInputElement).value);
+					}}
+					onPlay={() => {
+						getStarships();
+					}}
+				/>
 				<div className="gp-points">
-					0
+					{scores[1]}
 				</div>
 			</div>
 			<div className="gp-main">
