@@ -1,4 +1,4 @@
-describe('Party Bard Player test', () => {
+describe('Starships Wars test', () => {
 	before(() => {
 		cy.visit('http://localhost:3000')
 	})
