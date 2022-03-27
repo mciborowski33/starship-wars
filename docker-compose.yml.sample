@@ -5,8 +5,8 @@ services:
     container_name: mongodb-starships
     image: mongo:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: mongopass
+      MONGO_INITDB_ROOT_USERNAME: enterYourUsernameHere
+      MONGO_INITDB_ROOT_PASSWORD: enterYourPasswordHere
     ports:
       - 27017:27017
     volumes:

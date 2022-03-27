@@ -1,8 +1,0 @@
-{
-    "env": {
-        "MONGO_USER": "root",
-        "MONGO_PASSWORD": "mongopass",
-        "MONGO_DB": "starships_wars",
-        "MONGO_URL": "localhost"
-    }
-}

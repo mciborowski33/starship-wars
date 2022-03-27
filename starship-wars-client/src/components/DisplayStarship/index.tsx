@@ -17,9 +17,9 @@ const DisplayStarship: React.FC<DisplayProps> = ({ starship, winner, loser }) =>
 					{starship.stores_fighters ? 'Landing ship' : 'Fighter'}
 				</Typography>
 				<Typography variant="body2">
-					Crew: {starship.crew_number}
+					Crew: <span className="ds-crew-value">{starship.crew_number}</span>
 					<br />
-					Laser guns: {starship.guns}
+					Laser guns: <span className="ds-guns-value">{starship.guns}</span>
 				</Typography>
 			</CardContent>
 		</Fragment>
@@ -29,7 +29,7 @@ const DisplayStarship: React.FC<DisplayProps> = ({ starship, winner, loser }) =>
 	if (winner) {
 		bgColor = '#0f0';
 	} else if (loser) {
-		bgColor = '#f00'; 
+		bgColor = '#f00';
 	}
 
 	return (
